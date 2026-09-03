@@ -39,33 +39,40 @@ LLM agent (Ollama + qwen2.5) → Draft response (JSON)
         ↓
 FastAPI → Response for the agent
 ```
-## 📊 Бенчмарки и обоснование архитектурных решений
+Here's your corrected README section with fixes applied:
 
-В процессе разработки проводилось сравнение подходов для выбора оптимального баланса между точностью, скоростью инференса и стоимостью владения.
+---
 
-### 1. Классификация категории тикета (Текст)
-| Модель | Accuracy | F1 (macro) | Время инференса (1 запрос) | Потребление RAM |
-|--------|----------|------------|----------------------------|-----------------|
+## Benchmarking and Architectural Decisions
+
+During development, several approaches were compared to find the optimal balance between accuracy, inference speed, and total cost of ownership.
+
+### 1. Ticket Category Classification (Text)
+
+| Model | Accuracy | F1 (macro) | Inference Time (1 request) | RAM Usage |
+|-------|----------|------------|----------------------------|-----------|
 | Logistic Regression | 0.71 | 0.65 | ~2 ms | < 30 MB |
-| **Random Forest** | **0.78** | **0.74** | **~5 ms** | **~50 MB** |
+| Random Forest | 0.78 | 0.74 | ~5 ms | ~50 MB |
 | XGBoost | 0.79 | 0.75 | ~8 ms | ~80 MB |
 | DistilBERT (fine-tuned) | 0.82 | 0.80 | ~45 ms | ~250 MB |
 
-**Вывод:** Выбран **Random Forest**. XGBoost и DistilBERT дают маржинальный прирост точности (+1-4%), но увеличивают сложность пайплайна и время отклика. Для задачи первичной маршрутизации тикетов 78% точности при 5 мс — оптимальный trade-off.
+**Decision:** Random Forest was selected. XGBoost and DistilBERT provide marginal accuracy improvements (+1-4%) but increase pipeline complexity and response time. For the primary routing task, 78% accuracy at 5 ms is the optimal trade-off.
 
-### 2. Оценка приоритета (Метаданные + Категория)
-Использован тот же алгоритм (Random Forest), так как данные табличные и их объем не оправдывает использование градиентного бустинга.
+### 2. Priority Assessment (Metadata + Category)
 
-### 3. Генерация черновика ответа (LLM)
-Сравнение локальных моделей через Ollama (промпт с жесткой JSON-валидацией через Pydantic):
-| Модель | Качество (Human Eval 1-10) | Средняя задержка | Потребление VRAM |
-|--------|----------------------------|------------------|------------------|
-| mistral:7b | 7.2 | ~1.8 сек | ~3.8 GB |
-| llama3.1:8b | 7.8 | ~2.1 сек | ~4.5 GB |
-| **qwen2.5:7b** | **8.4** | **~2.0 сек** | **~4.2 GB** |
+The same algorithm (Random Forest) was used because the data is tabular and its volume does not justify the use of gradient boosting.
 
-**Вывод:** Выбран **qwen2.5:7b**. Он показал наилучшее следование инструкциям (особенно в части соблюдения JSON-схемы и русского языка) при адекватном потреблении ресурсов. Использование локального Ollama вместо облачного API гарантирует нулевую стоимость инференса и полную приватность данных клиентов (GDPR/152-ФЗ).
+### 3. Draft Response Generation (LLM)
 
+Local models were compared via Ollama with a prompt enforcing strict JSON validation through Pydantic:
+
+| Model | Quality (Human Eval 1-10) | Average Latency | VRAM Usage |
+|-------|----------------------------|-----------------|------------|
+| mistral:7b | 7.2 | ~1.8 sec | ~3.8 GB |
+| llama3.1:8b | 7.8 | ~2.1 sec | ~4.5 GB |
+| qwen2.5:7b | 8.4 | ~2.0 sec | ~4.2 GB |
+
+**Decision:** qwen2.5:7b was selected. It demonstrated the best instruction following, especially in adhering to the JSON schema and Russian language, while maintaining reasonable resource consumption. Using local Ollama instead of a cloud API ensures zero inference cost and full data privacy (GDPR / local regulations).
 
 ---
 
