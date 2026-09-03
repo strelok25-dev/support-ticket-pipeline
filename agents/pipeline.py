@@ -1,20 +1,31 @@
-import joblib
+import logging
+import pandas as pd
+from typing import TypedDict, Dict, Any
 from pathlib import Path
+import joblib
 
+# LangGraph импорты
+from langgraph.graph import StateGraph, END
+
+# Импортируем функцию генерации (убедись, что файл agents/draft_generator.py существует)
+from agents.draft_generator import generate_draft 
+
+# Настройка логгера
+logger = logging.getLogger(__name__)
+
+# !!! ВОТ ЭТОГО НЕ ХВАТАЛО !!!
 MODELS_DIR = Path("models")
 
 # БЕЗОПАСНАЯ ЗАГРУЗКА ДЛЯ CI/TESTS
 try:
     category_pipeline = joblib.load(MODELS_DIR / "category_pipeline.joblib")
-    priority_pipeline = joblib.load(MODELS_DIR / "priority_pipeline.joblib") # если есть
+    priority_pipeline = joblib.load(MODELS_DIR / "priority_pipeline.joblib")
 except FileNotFoundError:
-    # В CI или при юнит-тестах моделей нет. 
-    # Ставим None. Тесты пройдут, потому что мы мокаем run_pipeline.
-    # Если кто-то вызовет run_pipeline по-настоящему без моделей — он получит понятную ошибку.
+    # В CI моделей нет. Ставим None. 
+    # Тесты пройдут, потому что мы мокаем run_pipeline в test_unit.py
     category_pipeline = None
     priority_pipeline = None
 
-    
 class PipelineState(TypedDict):
     ticket_text: str
     customer_tier: str
