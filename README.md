@@ -24,23 +24,20 @@ Saves 8–16 hours of agent time daily + more consistent reply quality.
 
 
 
-## Architecture
+## 🏗 Architecture
 
-```text
-Input data (ticket text + metadata)
-        ↓
-ML Model 1 (TF-IDF + RandomForest) → Category
-        ↓
-ML Model 2 (RandomForest) → Priority (High / Medium / Low)
-        ↓
-LangGraph orchestrator
-        ↓
-LLM agent (Ollama + qwen2.5) → Draft response (JSON)
-        ↓
-FastAPI → Response for the agent
-```
-Here's your corrected README section with fixes applied:
-
+```mermaid
+flowchart LR
+    A[Client / UI] -->|HTTP POST| B(FastAPI)
+    B --> C{LangGraph Orchestrator}
+    C -->|1. Ticket Text| D[ML: Category RF]
+    D -->|Category| E[ML: Priority RF]
+    E -->|Metadata + Category| F[Ollama: Qwen2.5]
+    F -->|JSON Draft| G[Agent Response]
+    
+    style B fill:#2ecc71,stroke:#333,stroke-width:2px,color:#fff
+    style C fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
+    style F fill:#e74c3c,stroke:#333,stroke-width:2px,color:#fff
 ---
 
 ## Benchmarking and Architectural Decisions
@@ -131,6 +128,17 @@ Local models were compared via Ollama with a prompt enforcing strict JSON valida
    ```
 
 5. Open the docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+```markdown
+### Option 3: Interactive UI (Gradio)
+
+For a visual demonstration without using `curl` or Swagger:
+
+1. Ensure the API is running (`uvicorn app.main:app --reload`).
+2. Run the demo script in a separate terminal:
+   ```bash
+   python demo.py
+
 
 ### Option 2: Docker
 
