@@ -25,17 +25,30 @@ Saves 8–16 hours of agent time daily + more consistent reply quality.
 ## Architecture
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 
+  'primaryColor': '#ff6b6b',
+  'primaryTextColor': '#fff',
+  'primaryBorderColor': '#ff6b6b',
+  'lineColor': '#ffd93d',
+  'secondaryColor': '#6c5ce7',
+  'tertiaryColor': '#00b894',
+  'fontSize': '15px'
+}}}%%
 flowchart LR
-    A[Client / UI] -->|HTTP POST| B(FastAPI)
-    B --> C{LangGraph Orchestrator}
-    C -->|1. Ticket Text| D[ML: Category RF]
-    D -->|Category| E[ML: Priority RF]
-    E -->|Metadata + Category| F[Ollama: Qwen2.5]
-    F -->|JSON Draft| G[Agent Response]
+    A(("🎮<br/>Player")) -->|"⚡ START"| B["🏰<br/>FastAPI"]
+    B --> C{"🎯<br/>Quest<br/>Manager"}
+    C -->|"📜 Scroll"| D["📚<br/>Category<br/>Analyzer"]
+    D -->|"🏷️ Label"| E["⚖️<br/>Priority<br/>Judge"]
+    E -->|"🧬 Data"| F["🧙‍♂️<br/>Ollama<br/>Oracle"]
+    F -->|"📜 Prophecy"| G[("🎉<br/>Victory!")]
     
-    style B fill:#2ecc71,stroke:#333,stroke-width:2px,color:#fff
-    style C fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
-    style F fill:#e74c3c,stroke:#333,stroke-width:2px,color:#fff
+    style A fill:#ff6b6b,stroke:#ff6b6b,stroke-width:4px,color:#fff,rx:50,ry:50
+    style B fill:#4ecdc4,stroke:#4ecdc4,stroke-width:4px,color:#fff,rx:20,ry:20
+    style C fill:#ffe66d,stroke:#ffe66d,stroke-width:4px,color:#000,rx:20,ry:20
+    style D fill:#ff9f43,stroke:#ff9f43,stroke-width:4px,color:#fff,rx:20,ry:20
+    style E fill:#ff9f43,stroke:#ff9f43,stroke-width:4px,color:#fff,rx:20,ry:20
+    style F fill:#a29bfe,stroke:#a29bfe,stroke-width:4px,color:#fff,rx:20,ry:20
+    style G fill:#00b894,stroke:#00b894,stroke-width:4px,color:#fff,rx:50,ry:50
 ```
 
 ## Benchmarking and Architectural Decisions
