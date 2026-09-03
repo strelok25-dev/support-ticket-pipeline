@@ -1,4 +1,4 @@
-```markdown
+
 # Support Ticket Pipeline (ML + LLM)
 
 An automated system for processing customer support tickets in e-commerce.  
@@ -6,7 +6,7 @@ It classifies tickets, determines priority, and generates structured draft repli
 
 > 📝 **Project article:** [How I connected classic ML and LLM for support automation (dev.to)](LINK_TO_ARTICLE)
 
----
+
 
 ## Business Case
 
@@ -22,7 +22,7 @@ At 1,000 tickets per day this adds up to 8–16 hours of manual work.
 **Impact**  
 Saves 8–16 hours of agent time daily + more consistent reply quality.
 
----
+
 
 ## Architecture
 
