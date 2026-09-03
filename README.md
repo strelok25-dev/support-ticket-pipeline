@@ -22,9 +22,7 @@ At 1,000 tickets per day this adds up to 8–16 hours of manual work.
 **Impact**  
 Saves 8–16 hours of agent time daily + more consistent reply quality.
 
-
-
-## 🏗 Architecture
+## Architecture
 
 ```mermaid
 flowchart LR
@@ -38,7 +36,7 @@ flowchart LR
     style B fill:#2ecc71,stroke:#333,stroke-width:2px,color:#fff
     style C fill:#3498db,stroke:#333,stroke-width:2px,color:#fff
     style F fill:#e74c3c,stroke:#333,stroke-width:2px,color:#fff
----
+```
 
 ## Benchmarking and Architectural Decisions
 
