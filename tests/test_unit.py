@@ -8,7 +8,8 @@ client = TestClient(app)
 def test_health():
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    # Проверяем точное совпадение с тем, что возвращает наш продакшн-код
+    assert response.json() == {"status": "ok", "service": "ticket_pipeline"}
 
 def test_invalid_input():
     payload = {
