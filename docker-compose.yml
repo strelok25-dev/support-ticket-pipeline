@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  fastapi:
+    build: .
+    container_name: support-ticket-pipeline
+    ports:
+      - "${API_PORT:-8000}:8000"
+    env_file:
+      - .env
+    volumes:
+      # Монтируем модели и данные, чтобы не пересобирать образ при их изменении
+      - ./models:/app/models
+      - ./data:/app/data
+    extra_hosts:
+      # Для доступа к Ollama на хосте из контейнера
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

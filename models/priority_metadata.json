@@ -1,0 +1,18 @@
+{
+  "model_type": "priority",
+  "classes": [
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "feature_columns": [
+    "customer_tier",
+    "order_value",
+    "days_since_order",
+    "predicted_category"
+  ],
+  "accuracy": 1.0,
+  "f1_macro": 1.0,
+  "train_samples": 4000,
+  "test_samples": 1000
+}
